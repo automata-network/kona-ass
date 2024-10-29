@@ -3,6 +3,7 @@
 #![deny(unused_must_use, rust_2018_idioms)]
 #![cfg_attr(docsrs, feature(doc_cfg, doc_auto_cfg))]
 #![no_std]
+#![feature(error_in_core)]
 
 extern crate alloc;
 
