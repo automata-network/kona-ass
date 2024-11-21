@@ -127,6 +127,14 @@ impl TrieNode {
     /// is left as-is.
     pub fn blind(&mut self) {
         if self.length() >= B256::ZERO.len() && !matches!(self, Self::Blinded { .. }) {
+            // chenye: add blinded branch
+            if let TrieNode::Branch { stack } = self {
+                if let TrieNode::Blinded { commitment } = &stack[16] {
+                    *self = Self::Blinded { commitment: *commitment };
+                    return;
+                }
+            }
+
             let mut rlp_buf = Vec::with_capacity(self.length());
             self.encode_in_place(&mut rlp_buf);
             *self = Self::Blinded { commitment: keccak256(rlp_buf) }
